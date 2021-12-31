@@ -28,7 +28,8 @@ class BlogPostResource extends Resource
                 Forms\Components\DateTimePicker::make('published_at')
                     ->label('Publication date')
                     ->required()
-                    ->default(now()),
+                    ->default(now())
+                    ->minDate(now()),
                 Forms\Components\RichEditor::make('description')
                     ->label('Content')
                     ->required()
