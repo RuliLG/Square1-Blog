@@ -51,4 +51,19 @@ class BlogPost extends Model
     {
         return $query->where('published_at', '<=', now());
     }
+
+    public function scopeFromAdmin($query)
+    {
+        return $query->where('owner_id', config('import.admin_id'));
+    }
+
+    public function scopeFromWeb($query)
+    {
+        return $query->where('origin', 'web');
+    }
+
+    public function scopeFromApi($query)
+    {
+        return $query->where('origin', 'api');
+    }
 }
