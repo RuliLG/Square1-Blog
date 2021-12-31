@@ -53,7 +53,7 @@ class BlogPostPolicy
      */
     public function update(User $user, BlogPost $blogPost)
     {
-        return false;
+        return $user->is_admin;
     }
 
     /**
@@ -65,6 +65,17 @@ class BlogPostPolicy
      */
     public function delete(User $user, BlogPost $blogPost)
     {
-        return false;
+        return $user->is_admin;
+    }
+
+    /**
+     * Determine whether the user can bulk delete models`.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function deleteAny(User $user)
+    {
+        return $user->is_admin;
     }
 }
