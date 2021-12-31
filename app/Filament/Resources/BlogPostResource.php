@@ -39,17 +39,28 @@ class BlogPostResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('title')
+        $columns = [
+            Tables\Columns\TextColumn::make('title')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('published_at')
+                ->dateTime()
+                ->sortable()
+                ->label('Publication date'),
+            Tables\Columns\BooleanColumn::make('is_published')
+                ->label('Published'),
+        ];
+
+        if (auth()->user()->is_admin) {
+            $columns = [
+                Tables\Columns\TextColumn::make('owner.name')
+                    ->label('Owner')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('published_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->label('Publication date'),
-                Tables\Columns\BooleanColumn::make('is_published')
-                    ->label('Published'),
-            ])
+                ...$columns,
+            ];
+        }
+
+        return $table
+            ->columns($columns)
             ->pushActions([
                 Tables\Actions\LinkAction::make('Read')
                     ->url(fn ($record) => $record->is_published ? route('blog-post', ['id' => $record]) : URL::signedRoute('blog-post', ['id' => $record])),
