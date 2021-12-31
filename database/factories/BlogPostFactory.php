@@ -20,10 +20,13 @@ class BlogPostFactory extends Factory
             $post .= '<p>' . $para . '</p>';
         }
 
+        $adminUser = \App\Models\User::where('role', 'admin')->firstOrFail();
+
         return [
             'title' => $title,
             'published_at' => $this->faker->dateTimeBetween('-1 year', '+1 year'),
             'description' => $post,
+            'owner_id' => $adminUser->id,
         ];
     }
 }
