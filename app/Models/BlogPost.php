@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Spatie\SchemaOrg\Schema;
 
 class BlogPost extends Model
 {
@@ -65,5 +66,22 @@ class BlogPost extends Model
     public function scopeFromApi($query)
     {
         return $query->where('origin', 'api');
+    }
+
+    public function getSchemaOrgAttribute()
+    {
+        $schema = Schema::blogPosting()
+            ->articleBody($this->description)
+            ->wordCount(Str::wordCount($this->description))
+            ->abstract($this->excerpt)
+            ->dateCreated($this->created_at->toISO8601String())
+            ->dateModified($this->updated_at->toISO8601String())
+            ->datePublished($this->published_at->toISO8601String())
+            ->headline($this->title)
+            ->author(
+                Schema::person()
+                    ->name($this->owner->name)
+            );
+        return $schema;
     }
 }

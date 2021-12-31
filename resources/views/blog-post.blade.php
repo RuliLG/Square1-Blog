@@ -15,6 +15,7 @@
         <meta property="og:url" content="{ route('blog-post', ['id' => $post->id]) }}">
         <meta property="og:image" content="{{ Tailgraph::url($post->title, $post->excerpt) }}">
         <meta property="og:description" content="{{ $post->excerpt }}">
+        {!! $post->schema_org->toScript() !!}
     @endpush
     <div class="relative py-16 bg-white overflow-hidden">
         <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
