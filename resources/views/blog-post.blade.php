@@ -1,6 +1,21 @@
 <x-guest-layout>
-    {{-- TODO: Add Open Graph tags here --}}
-    {{-- TODO: Add schema here --}}
+    @section('title', $post->title . ' | ' . config('app.name'))
+    @section('metadescription', $post->excerpt)
+    @push('meta')
+        <link rel="canonical" href="{{ route('blog-post', ['id' => $post->id]) }}" />
+        <meta name="author" content="{{ $post->owner->name }}">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@square1_io">
+        <meta name="twitter:title" content="{{ $post->title }}">
+        <meta name="twitter:description" content="{{ $post->excerpt }}">
+        <meta name="twitter:creator" content="@square1_io">
+        <meta name="twitter:image" content="{{ Tailgraph::url($post->title, $post->excerpt) }}">
+        <meta property="og:title" content="{{ $post->title }}">
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="{ route('blog-post', ['id' => $post->id]) }}">
+        <meta property="og:image" content="{{ Tailgraph::url($post->title, $post->excerpt) }}">
+        <meta property="og:description" content="{{ $post->excerpt }}">
+    @endpush
     <div class="relative py-16 bg-white overflow-hidden">
         <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
             <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">

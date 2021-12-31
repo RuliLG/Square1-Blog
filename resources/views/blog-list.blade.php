@@ -5,7 +5,16 @@
         @else
         <link rel="canonical" href="{{ route('home', ['page' => request()->get('page')]) }}" />
         @endif
-        {{-- TODO: Add Open Graph tags here --}}
+        <meta name="author" content="Square1">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@square1_io">
+        <meta name="twitter:title" content="{{ config('app.name') }}">
+        <meta name="twitter:creator" content="@square1_io">
+        <meta name="twitter:image" content="{{ Tailgraph::url(config('app.name'), '') }}">
+        <meta property="og:title" content="{{ config('app.name') }}">
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="{ route('blog-post', ['id' => $post->id]) }}">
+        <meta property="og:image" content="{{ Tailgraph::url(config('app.name'), '') }}">
     @endpush
     <div class="bg-white pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
         <div class="relative max-w-lg mx-auto divide-y-2 divide-gray-200 lg:max-w-7xl">
