@@ -76,4 +76,13 @@ class BlogPostResource extends Resource
             'edit' => Pages\EditBlogPost::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->is_admin) {
+            return parent::getEloquentQuery();
+        }
+
+        return parent::getEloquentQuery()->where('owner_id', auth()->id());
+    }
 }
