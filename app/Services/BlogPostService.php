@@ -22,13 +22,15 @@ class BlogPostService {
     public function show($id)
     {
         return Cache::remember(CacheKey::post($id), now()->addMinutes(5), function () use ($id) {
-            return BlogPost::published()
+            return BlogPost::with('owner')
+                ->published()
                 ->findOrFail($id);
         });
     }
 
     public function forceShow($id)
     {
-        return BlogPost::findOrFail($id);
+        return BlogPost::with('owner')
+            ->findOrFail($id);
     }
 }
