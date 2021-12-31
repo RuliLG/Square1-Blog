@@ -12,7 +12,7 @@ class BlogPost extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'published_at', 'description',
+        'title', 'published_at', 'description', 'owner_id',
     ];
 
     protected $casts = [
