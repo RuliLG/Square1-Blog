@@ -50,6 +50,13 @@ class BlogPostResource extends Resource
                 ->label('Published'),
         ];
 
+        $filters = [
+            Tables\Filters\Filter::make('Not published')
+                ->query(fn (Builder $query) => $query->where('published_at', '>', now())),
+            Tables\Filters\Filter::make('Published')
+                ->query(fn (Builder $query) => $query->where('published_at', '<=', now())),
+        ];
+
         if (auth()->user()->is_admin) {
             $columns = [
                 Tables\Columns\TextColumn::make('owner.name')
@@ -57,6 +64,9 @@ class BlogPostResource extends Resource
                     ->searchable(),
                 ...$columns,
             ];
+
+            $filters[] = Tables\Filters\Filter::make('From Api')
+                ->query(fn (Builder $query) => $query->fromApi());
         }
 
         return $table
@@ -65,12 +75,7 @@ class BlogPostResource extends Resource
                 Tables\Actions\LinkAction::make('Read')
                     ->url(fn ($record) => $record->is_published ? route('blog-post', ['id' => $record]) : URL::signedRoute('blog-post', ['id' => $record])),
             ])
-            ->filters([
-                Tables\Filters\Filter::make('Not published')
-                    ->query(fn (Builder $query) => $query->where('published_at', '>', now())),
-                Tables\Filters\Filter::make('Published')
-                    ->query(fn (Builder $query) => $query->where('published_at', '<=', now())),
-            ]);
+            ->filters($filters);
     }
 
     public static function getRelations(): array
