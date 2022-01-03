@@ -30,7 +30,7 @@ abstract class BaseEngine {
         $postsToInsert = [];
         foreach ($rawPosts as $rawPost) {
             $post = $this->getPostFromRawData($rawPost);
-            if ($lastPost && $post['published_at']->isAfter($lastPost->published_at)) {
+            if ($lastPost && $post['published_at']->isAfter($lastPost->published_at) || !$lastPost) {
                 $post['created_at'] = $post['published_at'];
                 $post['updated_at'] = $post['published_at'];
                 $postsToInsert[] = $post;
