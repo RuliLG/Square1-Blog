@@ -33,6 +33,7 @@ abstract class BaseEngine {
             if ($lastPost && $post['published_at']->isAfter($lastPost->published_at) || !$lastPost) {
                 $post['created_at'] = $post['published_at'];
                 $post['updated_at'] = $post['published_at'];
+                $post['origin'] = 'api';
                 $postsToInsert[] = $post;
             }
         }
