@@ -12,7 +12,7 @@ class BlogController extends Controller
     public function index()
     {
         return view('blog-list', [
-            'posts' => (new BlogPostService())->index(),
+            'posts' => (new BlogPostService())->index(request()->get('sort'), request()->get('page', 1)),
         ]);
     }
 

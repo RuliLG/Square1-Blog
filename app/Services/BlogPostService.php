@@ -7,15 +7,14 @@ use App\Utils\CacheKey;
 use Illuminate\Support\Facades\Cache;
 
 class BlogPostService {
-    public function index()
+    public function index($sort, $page = 1)
     {
-        $isAscendingOrder = request()->get('sort') === 'asc';
-        $page = request()->get('page', 1);
+        $isAscendingOrder = $sort === 'asc';
         $key = CacheKey::postList($isAscendingOrder, $page);
-        return Cache::remember($key, now()->addMinutes(5), function () use ($isAscendingOrder) {
+        return Cache::remember($key, now()->addMinutes(5), function () use ($isAscendingOrder, $page) {
             return BlogPost::published()
                 ->orderBy('published_at', $isAscendingOrder ? 'ASC' : 'DESC')
-                ->paginate(10);
+                ->paginate(10, ['*'], 'page', $page);
         });
     }
 
